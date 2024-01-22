@@ -1,5 +1,5 @@
 
-const AccessToken = `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`
+const AccessToken = `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`
 const user_name = 'johnpapa'
 
 const container = document.querySelector(".container")
