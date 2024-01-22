@@ -13,9 +13,9 @@ async function userdata() {
 
           //fetching user profile details 
         const res = await fetch(`https://api.github.com/users/${user_name}`, {
-            headers: {
-                'Authorization': `token ${AccessToken}`,
-            }
+            // headers: {
+            //     'Authorization': `token ${AccessToken}`,
+            // }
         });
 
         const git = await res.json();
@@ -46,9 +46,9 @@ async function repositories(page) {
 
       //fetching user All repos
     const repos_res = await fetch(`https://api.github.com/users/${user_name}/repos?page=${page}&per_page=4`, {
-        headers: {
-            'Authorization': `token ${AccessToken}`,
-        }
+        // headers: {
+        //     'Authorization': `token ${AccessToken}`,
+        // }
     });
     
     const repos = await repos_res.json() // repositories reponses
