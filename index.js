@@ -1,25 +1,23 @@
-const AccessToken = `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`
+
+const AccessToken = `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`
 const user_name = 'johnpapa'
 
-let mounted = false;
 const container = document.querySelector(".container")
 const home_page = document.querySelector(".home_page")
 
-// const user_profile = document.querySelector(".user_profile")
-// const git_repos = document.querySelector(".git_repos")
-// const page_number = document.querySelector(".page_number")
-
+//CODE RELATED RELATED TO USER PROFILE FETCH AND PREVIEW DATA
 async function userdata() {
 
-    // USER PROFILE RELATED CODE //
     const user_profile = document.createElement('div')
     user_profile.classList.add('user_profile')
-    
+
+          //fetching user profile details 
         const res = await fetch(`https://api.github.com/users/${user_name}`, {
             headers: {
                 'Authorization': `token ${AccessToken}`,
             }
         });
+
         const git = await res.json();
 
         let user_avatar = document.createElement('div')
@@ -35,45 +33,37 @@ async function userdata() {
         user_profile.appendChild(user_avatar)
         user_profile.appendChild(user_detail)
         container.appendChild(user_profile)
-       
-
-    // USER REPOSITORY RELATED CODE //
-    // fetching user repos 
+    
 }
 
-let page = 1;
 
+//CODE RELATED RELATED TO USER REPOSITORIES FETCH AND PREVIEW ALL REPOS
+let page = 1;
 const git_repos = document.createElement('div')
 git_repos.classList.add('git_repos')
 
 async function repositories(page) {
+    git_repos.innerHTML = `<h1>Loading...</h1>` //adding loader 
 
-    git_repos.innerHTML = `<h1>Loading...</h1>`
-
-    const repos_res = await fetch(`https://api.github.com/users/${user_name}/repos?page=${page}&per_page=10`, {
+      //fetching user All repos
+    const repos_res = await fetch(`https://api.github.com/users/${user_name}/repos?page=${page}&per_page=4`, {
         headers: {
             'Authorization': `token ${AccessToken}`,
         }
     });
-
-    const repos = await repos_res.json()
     
-    if(!repos){
-        container.innerHTML = ''
-        const h1 = document.createElement('h1');
-        h1.innerHTML = "Loading..."
-        container.appendChild(h1)
-    }
-    git_repos.innerHTML = '';
+    const repos = await repos_res.json() // repositories reponses
+
+    git_repos.innerHTML = '' // removing loader
 
     repos?.map(async element => {
-        let repo = document.createElement('div')
-        repo.classList.add("repos");
+        let repos = document.createElement('div')
+        repos.classList.add("repos");
         let techs = document.createElement('div')
 
-        repo.innerHTML = `<h1>${element.full_name}</h1><h5>${element.description}</h5>`
+        repos.innerHTML = `<h1>${element.full_name}</h1> <h5>${element.description}</h5>`
 
-        git_repos.appendChild(repo)
+        git_repos.appendChild(repos)
         container.appendChild(git_repos)
 
         //fetching user repos techs stack used 
@@ -84,17 +74,21 @@ async function repositories(page) {
         });
         const lang = await language.json();
 
+        //this loop is used to display coding techs stacks used in  a repo
         for (const key in lang) {
             if (Object.hasOwnProperty.call(lang, key)) {
                 techs = document.createElement('span')
                 techs.classList.add("techs")
                 techs.innerHTML = key
-                repo.appendChild(techs)
+                repos.appendChild(techs)
             }
         }
     })
+
 }
 
+
+//THIS CODE IS RELATED PAGINATION FUNCTIONALITY
 function pagination(){
     const page_number = document.createElement('div')
     page_number.classList.add('page_number')
@@ -107,7 +101,8 @@ function pagination(){
         })
         page_number.appendChild(span);
     }
-
+       
+    //creating next and older button functionality
     const buttons = document.createElement('div')
     buttons.classList.add('btns')
     const older = document.createElement('button')
@@ -125,13 +120,14 @@ function pagination(){
         repositories(page)
     })
     next.innerText = "next"
-    
+
     buttons.appendChild(older)
     buttons.appendChild(next)
 
-    home_page.appendChild(page_number)
+    home_page.appendChild(page_number)   
     home_page.appendChild(buttons)
 
+    //for loop to display page numbers
     for(let i=1;i<=9;i++){
         pages(i)
     }
