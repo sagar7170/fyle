@@ -45,7 +45,7 @@ async function repositories(page) {
     git_repos.innerHTML = `<h1>Loading...</h1>` //adding loader 
 
       //fetching user All repos
-    const repos_res = await fetch(`https://api.github.com/users/${user_name}/repos?page=${page}&per_page=4`, {
+    const repos_res = await fetch(`https://api.github.com/users/${user_name}/repos?page=${page}&per_page=10`, {
         // headers: {
         //     'Authorization': `token ${AccessToken}`,
         // }
